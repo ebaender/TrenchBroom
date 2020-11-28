@@ -59,6 +59,7 @@ namespace TrenchBroom {
             bool look(const InputState& inputState) const;
             bool pan(const InputState& inputState) const;
             bool orbit(const InputState& inputState) const;
+            bool adjustFlySpeed(const InputState& inputState) const;
 
             float lookSpeedH() const;
             float lookSpeedV() const;

@@ -88,6 +88,10 @@ namespace TrenchBroom {
                 const auto maxDistance = std::max(vm::intersect_ray_plane(m_camera.viewRay(), orbitPlane) - 32.0f, 0.0f);
                 const auto distance = std::min(factor * scrollDist * moveSpeed(false), maxDistance);
                 m_camera.moveBy(distance * m_camera.direction());
+            } else if (adjustFlySpeed(inputState)) {
+                const auto speed = pref(Preferences::CameraFlyMoveSpeed);
+                const auto newSpeed = vm::clamp(speed + factor * (scrollDist > 0.0f ? 0.1f : -0.1f), 0.0f, 2.0f);
+                setPref(Preferences::CameraFlyMoveSpeed, newSpeed);
             } else if (move(inputState)) {
                 if (zoom) {
                     const auto zoomFactor = 1.0f + scrollDist / 50.0f * factor;
@@ -154,8 +158,7 @@ namespace TrenchBroom {
         }
 
         bool CameraTool3D::move(const InputState& inputState) const {
-            return ((inputState.mouseButtonsPressed(MouseButtons::MBNone) ||
-                     inputState.mouseButtonsPressed(MouseButtons::MBRight)) &&
+            return (inputState.mouseButtonsPressed(MouseButtons::MBNone) &&
                     inputState.checkModifierKeys(MK_No, MK_No, MK_DontCare));
         }
 
@@ -173,6 +176,11 @@ namespace TrenchBroom {
         bool CameraTool3D::orbit(const InputState& inputState) const {
             return (inputState.mouseButtonsPressed(MouseButtons::MBRight) &&
                     inputState.modifierKeysPressed(ModifierKeys::MKAlt));
+        }
+
+        bool CameraTool3D::adjustFlySpeed(const InputState& inputState) const {
+            return (inputState.mouseButtonsPressed(MouseButtons::MBRight) &&
+                    inputState.checkModifierKeys(MK_No, MK_No, MK_No));
         }
 
         float CameraTool3D::lookSpeedH() const {
