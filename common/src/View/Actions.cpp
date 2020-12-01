@@ -1215,6 +1215,9 @@ namespace TrenchBroom {
                     return context.hasDocument() && context.frame()->canDecGridSize();
                 }));
             gridMenu.addSeparator();
+
+            // ebaender - temporarily disabled grid setting options until i'm sure what algorithm will be used to calculate actual grid size
+#if 0
             gridMenu.addItem(createMenuAction(IO::Path("Menu/View/Grid/Set Grid Size 0.125"), QObject::tr("Set Grid Size 0.125"), 0,
                 [](ActionExecutionContext& context) {
                     context.frame()->setGridSize(-3);
@@ -1335,6 +1338,7 @@ namespace TrenchBroom {
                 [](ActionExecutionContext& context) {
                     return context.hasDocument() && context.document()->grid().size() == 8;
                 }));
+#endif
 
             auto& cameraMenu = viewMenu.addMenu("Camera");
             cameraMenu.addItem(createMenuAction(IO::Path("Menu/View/Camera/Move to Next Point"), QObject::tr("Move Camera to Next Point"), Qt::Key_Period,

@@ -37,18 +37,33 @@ namespace TrenchBroom {
     namespace View {
         Grid::Grid(const int size) :
         m_size(size),
+        // ebaender - set default grid style
+        m_style(0),
         m_snap(true),
         m_visible(true) {}
 
         FloatType Grid::actualSize(const int size) {
+            return std::exp2(size);
+        }
 
-            // ebaender - return decimal grid size
-            // return std::exp2(size);
-            return (size == 0) ? 1 : 10.0 * size;
+        // ebaender - decide which grid style to use
+        FloatType Grid::actualSize(const int size, const int style) {
+            switch (style)
+            {
+            case 1:
+                return (size == 0) ? 1 : 10.0 * size;
+            default:
+                return std::exp2(size);
+            }
         }
 
         int Grid::size() const {
             return m_size;
+        }
+
+        // ebaender - get grid style
+        int Grid::style() const {
+            return m_style;
         }
 
         void Grid::setSize(const int size) {
@@ -56,6 +71,14 @@ namespace TrenchBroom {
             assert(size >= MinSize);
             m_size = size;
             gridDidChangeNotifier();
+        }
+
+        // ebaender - set grid style
+        void Grid::setStyle(const int style) {
+            assert(style == 0 || style == 1);
+            m_style = style;
+            gridDidChangeNotifier();
+            
         }
 
         void Grid::incSize() {
@@ -74,7 +97,8 @@ namespace TrenchBroom {
 
         FloatType Grid::actualSize() const {
             if (snap()) {
-                return actualSize(m_size);
+                // ebaender - changed to style overload
+                return actualSize(m_size, m_style);
             }
             return FloatType(1);
         }

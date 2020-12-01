@@ -49,6 +49,8 @@ namespace TrenchBroom {
             static const int MinSize = 0;
         private:
             int m_size;
+            // ebaender - grid style
+            int m_style;
             bool m_snap;
             bool m_visible;
         public:
@@ -57,9 +59,15 @@ namespace TrenchBroom {
             explicit Grid(int size);
 
             static FloatType actualSize(int size);
+            // ebaender - overload that checks for grid style
+            static FloatType actualSize(int size, int style);
 
             int size() const;
+            // ebeander - get grid style
+            int style() const;
             void setSize(int size);
+            // ebaender - set grid style
+            void setStyle(int style);
             void incSize();
             void decSize();
             FloatType actualSize() const;

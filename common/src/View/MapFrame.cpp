@@ -121,6 +121,8 @@ namespace TrenchBroom {
         m_console(nullptr),
         m_inspector(nullptr),
         m_gridChoice(nullptr),
+        // ebaender - grid style combo box
+        m_gridStyle(nullptr),
         m_statusBarLabel(nullptr),
         m_compilationDialog(nullptr),
         m_recentDocumentsMenu(nullptr),
@@ -398,18 +400,32 @@ namespace TrenchBroom {
 
             m_gridChoice = new QComboBox();
             for (int i = Grid::MinSize; i <= Grid::MaxSize; ++i) {
-                const FloatType gridSize = Grid::actualSize(i);
+                // ebaender - changed actualSize to style overload
+                const FloatType gridSize = Grid::actualSize(i, m_document->grid().style());
                 const QString gridSizeStr = tr("Grid %1").arg(QString::number(gridSize, 'g'));
                 m_gridChoice->addItem(gridSizeStr, QVariant(i));
             }
 
             m_toolBar->addWidget(m_gridChoice);
+
+            // ebaender - combox box for setting grid style
+            m_gridStyle = new QComboBox();
+            m_gridStyle->addItem("Default", QVariant(0));
+            m_gridStyle->addItem("Decimal", QVariant(1));
+
+            m_toolBar->addWidget(m_gridStyle);
         }
 
         void MapFrame::updateToolBarWidgets() {
             const Grid& grid = m_document->grid();
             const int sizeIndex = grid.size() - Grid::MinSize;
             m_gridChoice->setCurrentIndex(sizeIndex);
+            // ebaender - update grid combo box text in case style changed
+            for (int i = Grid::MinSize; i <= Grid::MaxSize; ++i) {
+                const FloatType gridSize = Grid::actualSize(i, m_document->grid().style());
+                const QString gridSizeStr = tr("Grid %1").arg(QString::number(gridSize, 'g'));
+                m_gridChoice->setItemText(i, gridSizeStr);
+            }
         }
 
         void MapFrame::createStatusBar() {
@@ -742,6 +758,8 @@ namespace TrenchBroom {
             connect(m_autosaveTimer, &QTimer::timeout, this, &MapFrame::triggerAutosave);
             connect(qApp, &QApplication::focusChanged, this, &MapFrame::focusChange);
             connect(m_gridChoice, QOverload<int>::of(&QComboBox::activated), this, [this](const int index) { setGridSize(index + Grid::MinSize); });
+            // ebaender - connect grid style selection
+            connect(m_gridStyle, QOverload<int>::of(&QComboBox::activated), this, [this](const int index) { setGridStyle(index); });
             connect(QApplication::clipboard(), &QClipboard::dataChanged, this, [this]() {
                 // update the "Paste" menu items
                 this->updateActionState();
@@ -1523,6 +1541,11 @@ namespace TrenchBroom {
 
         void MapFrame::setGridSize(const int size) {
             m_document->grid().setSize(size);
+        }
+
+        // ebaender - set grid style
+        void MapFrame::setGridStyle(const int style) {
+            m_document->grid().setStyle(style);
         }
 
         void MapFrame::moveCameraToNextPoint() {

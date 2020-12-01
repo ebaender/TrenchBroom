@@ -101,6 +101,8 @@ namespace TrenchBroom {
             Inspector* m_inspector;
 
             QComboBox* m_gridChoice;
+            // ebaender - grid style combo box
+            QComboBox* m_gridStyle;
             QLabel* m_statusBarLabel;
 
             QPointer<QDialog> m_compilationDialog;
@@ -311,6 +313,8 @@ namespace TrenchBroom {
             bool canDecGridSize() const;
 
             void setGridSize(int size);
+            // ebaender - set grid style
+            void setGridStyle(int style);
 
             void moveCameraToNextPoint();
             bool canMoveCameraToNextPoint() const;
