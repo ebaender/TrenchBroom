@@ -41,7 +41,10 @@ namespace TrenchBroom {
         m_visible(true) {}
 
         FloatType Grid::actualSize(const int size) {
-            return std::exp2(size);
+
+            // ebaender - return decimal grid size
+            // return std::exp2(size);
+            return (size == 0) ? 1 : 10.0 * size;
         }
 
         int Grid::size() const {

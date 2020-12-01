@@ -42,8 +42,11 @@ namespace TrenchBroom {
     namespace View {
         class Grid {
         public:
-            static const int MaxSize = 8;
-            static const int MinSize = -3;
+            // ebaender - changed size limits to match decimal actualSize
+            // static const int MaxSize = 8;
+            // static const int MinSize = -3;
+            static const int MaxSize = 10;
+            static const int MinSize = 0;
         private:
             int m_size;
             bool m_snap;
