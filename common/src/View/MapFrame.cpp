@@ -808,6 +808,23 @@ namespace TrenchBroom {
             }
         }
 
+        // ebaender - save and export
+        bool MapFrame::saveAndExportDocument() {
+            bool saveSuccess = saveDocument();
+
+            if (!saveSuccess)
+                return false;
+
+            const IO::Path& originalPath = m_document->path();
+            const IO::Path objPath = originalPath.replaceExtension("obj");
+            const QString newFileName = QString::fromStdString(objPath.asString());
+
+            if (newFileName.isEmpty())
+                return false;
+
+           return exportDocument(Model::ExportFormat::WavefrontObj, IO::pathFromQString(newFileName));
+        }
+
         bool MapFrame::saveDocumentAs() {
             try {
                 const IO::Path& originalPath = m_document->path();

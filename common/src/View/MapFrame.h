@@ -169,6 +169,8 @@ namespace TrenchBroom {
             bool newDocument(std::shared_ptr<Model::Game> game, Model::MapFormat mapFormat);
             bool openDocument(std::shared_ptr<Model::Game> game, Model::MapFormat mapFormat, const IO::Path& path);
             bool saveDocument();
+            // ebaender - save and export
+            bool saveAndExportDocument();
             bool saveDocumentAs();
             bool revertDocument();
             bool exportDocumentAsObj();

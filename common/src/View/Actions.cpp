@@ -738,6 +738,12 @@ namespace TrenchBroom {
                     context.frame()->saveDocument();
                 },
                 [](ActionExecutionContext& context) { return context.hasDocument(); }));
+            // ebaender - save and export
+            fileMenu.addItem(createMenuAction(IO::Path("Menu/File/Save and Export"), QObject::tr("Save and Export"), QKeySequence::SaveAndExport,
+                [](ActionExecutionContext& context) {
+                    context.frame()->saveAndExportDocument();
+                },
+                [](ActionExecutionContext& context) { return context.hasDocument(); }));
             fileMenu.addItem(createMenuAction(IO::Path("Menu/File/Save as..."), QObject::tr("Save Document as..."), QKeySequence::SaveAs,
                 [](ActionExecutionContext& context) {
                     context.frame()->saveDocumentAs();
