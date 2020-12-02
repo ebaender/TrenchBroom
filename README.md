@@ -1,3 +1,10 @@
+# TrenchBroom for Unity
+![](export-demo.gif)
+
+## Features
+- Decimal grid sizes
+- Streamlined exporting as wavefront object
+
 # TrenchBroom
 
 [![TrenchBroom Icon](app/resources/graphics/images/AppIcon.png)](https://www.youtube.com/watch?v=shcAvnYp9ow)
